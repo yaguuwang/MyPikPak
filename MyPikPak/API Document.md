@@ -25,12 +25,14 @@
 
 **Request URL**: https://user.mypikpak.com/v1/auth/token
 
-**Response**: same as [sign in response](#Sign_in_response)
+**Request body**
 
 - client_id:
 - client_secret:
 - grant_type: "refresh_token",
 - refresh_token: [refresh token](#Refresh_token)
+
+**Response**: same as [sign in response](#Sign_in_response)
 
 ## Me
 
