@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct MyPikPakApp: App {
+    @StateObject private var authorizationService = AuthorizationService()
+    
     var body: some Scene {
         WindowGroup {
-            SignInView()
+            if authorizationService.isAuthorized {
+                MainThreeTierNavView()
+            } else {
+                SignInView()
+                    .environmentObject(authorizationService)
+            }
         }
     }
 }

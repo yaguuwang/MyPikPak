@@ -41,12 +41,14 @@ struct SignIn: Codable, Equatable {
     
     static let url = URL(string: "https://user.mypikpak.com/v1/auth/signin")!
     
+    static let key = "SignIn"
+    
     func saveToUserDefault() {
         
         let encoder = JSONEncoder()
         do {
             let data = try encoder.encode(self)
-            UserDefaults.standard.set(data, forKey: "SignIn")
+            UserDefaults.standard.set(data, forKey: Self.key)
         } catch {
             fatalError("Unable to save SignIn to userdefault: \(error.localizedDescription)")
         }
@@ -55,12 +57,16 @@ struct SignIn: Codable, Equatable {
     static func getFromUserDefault() -> SignIn? {
         let decoder = JSONDecoder()
         do {
-            guard let data = UserDefaults.standard.object(forKey: "SignIn") as? Data else { return nil }
+            guard let data = UserDefaults.standard.object(forKey: Self.key) as? Data else { return nil }
             let signIn = try decoder.decode(SignIn.self, from: data)
             return signIn
         } catch {
             fatalError("Unable to decode SignIn data from userdefault: \(error.localizedDescription)")
         }
+    }
+    
+    static func removeFromUserDefault() {
+        UserDefaults.standard.removeObject(forKey: Self.key)
     }
 }
 
