@@ -15,27 +15,34 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            TextField("User Name", text: $signInRequestBody.username)
-                .textFieldStyle(.roundedBorder)
-            
-            TextField("Password", text: $signInRequestBody.password)
-                .textFieldStyle(.roundedBorder)
-            
-            Button("Sign In") {
-                fetchSignIn()
-            }
-            
-            if let signIn {
-                Text(signIn.userId)
-                Text(signIn.accessToken)
-                Text(signIn.tokenType)
+            if signIn == nil {
+                TextField("User Name", text: $signInRequestBody.username)
+                    .textFieldStyle(.roundedBorder)
+                
+                TextField("Password", text: $signInRequestBody.password)
+                    .textFieldStyle(.roundedBorder)
+                
+                Button("Sign In") {
+                    fetchSignIn()
+                }
+            } else {
+                Text(signIn!.userId)
+                Text(signIn!.accessToken)
+                Text(signIn!.tokenType)
             }
         }
         .padding()
+        .onAppear(perform: restoreSignIn)
     }
 }
 
 extension ContentView {
+    private func store(_ signIn: SignIn) {
+        guard signIn != .default else { return }
+        self.signIn = signIn
+        signIn.saveToUserDefault()
+    }
+    
     private func fetchSignIn() {
         let encoder = JSONEncoder()
         var request = URLRequest(url: SignIn.url)
@@ -45,8 +52,15 @@ extension ContentView {
             .map(\.data)
             .decode(type: SignIn.self, decoder: JSONDecoder())
             .replaceError(with: .default)
-            .sink(receiveValue: { self.signIn = $0 })
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: store)
             .store(in: &requests)
+    }
+    
+    private func restoreSignIn() {
+        if let signIn = SignIn.getFromUserDefault() {
+            self.signIn = signIn
+        }
     }
 }
 

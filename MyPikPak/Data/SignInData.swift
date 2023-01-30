@@ -14,7 +14,7 @@ struct SignInRequstBody: Encodable {
     var password: String = ""
 }
 
-struct SignIn: Codable {
+struct SignIn: Codable, Equatable {
     var tokenType: String
     var accessToken: String
     var refreshToken: String
@@ -29,10 +29,39 @@ struct SignIn: Codable {
         case userId = "sub"
     }
     
+    static func == (lhs: SignIn, rhs: SignIn) -> Bool {
+        return lhs.tokenType == rhs.tokenType &&
+        lhs.accessToken == rhs.accessToken &&
+        lhs.refreshToken == rhs.refreshToken &&
+        lhs.expiresIn == rhs.expiresIn &&
+        lhs.userId == rhs.userId
+    }
+    
     static let `default` = SignIn(tokenType: "default", accessToken: "default", refreshToken: "default", expiresIn: 100, userId: "default")
     
     static let url = URL(string: "https://user.mypikpak.com/v1/auth/signin")!
     
+    func saveToUserDefault() {
+        
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(self)
+            UserDefaults.standard.set(data, forKey: "SignIn")
+        } catch {
+            fatalError("Unable to save SignIn to userdefault: \(error.localizedDescription)")
+        }
+    }
+    
+    static func getFromUserDefault() -> SignIn? {
+        let decoder = JSONDecoder()
+        do {
+            guard let data = UserDefaults.standard.object(forKey: "SignIn") as? Data else { return nil }
+            let signIn = try decoder.decode(SignIn.self, from: data)
+            return signIn
+        } catch {
+            fatalError("Unable to decode SignIn data from userdefault: \(error.localizedDescription)")
+        }
+    }
 }
 
 
