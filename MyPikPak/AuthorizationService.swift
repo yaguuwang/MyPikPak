@@ -18,4 +18,9 @@ class AuthorizationService: ObservableObject {
     static var example: AuthorizationService {
         AuthorizationService()
     }
+    
+    func signOut() {
+        isAuthorized = false
+        SignIn.removeFromUserDefault()
+    }
 }

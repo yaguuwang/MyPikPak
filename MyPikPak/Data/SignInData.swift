@@ -8,8 +8,8 @@
 import Foundation
 
 struct SignInRequstBody: Encodable {
-    let client_id = "YcrttD06T9PIkqAY"
-    let client_secret = "A3zfcmfNEeyTH0pX2k4GNg"
+    let client_id = Common.client_id
+    let client_secret = Common.client_secret
     var username: String = ""
     var password: String = ""
 }

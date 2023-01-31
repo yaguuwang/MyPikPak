@@ -15,6 +15,7 @@ struct MyPikPakApp: App {
         WindowGroup {
             if authorizationService.isAuthorized {
                 MainThreeTierNavView()
+                    .environmentObject(authorizationService)
             } else {
                 SignInView()
                     .environmentObject(authorizationService)
