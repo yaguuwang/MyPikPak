@@ -32,5 +32,6 @@ class SignInViewModel: ObservableObject {
         guard signIn != .default else { return }
         signIn.saveToUserDefault()
         signedIn = true
+        notify(.login, nil)
     }
 }

@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 class AuthorizationService: ObservableObject {
-    @Published var isAuthorized = false
+    @Published private(set) var isAuthorized = false
+    @Published private(set) var authorizationToken: String?
+    @Published private(set) var userId: String?
+    
+    private var request = Set<AnyCancellable>()
     
     init() {
         let signIn = SignIn.getFromUserDefault()
         isAuthorized = signIn != nil
+        if let signIn {
+            authorizationToken = signIn.tokenType + " " + signIn.accessToken
+            userId = signIn.userId
+        }
     }
     
     static var example: AuthorizationService {
@@ -22,5 +31,14 @@ class AuthorizationService: ObservableObject {
     func signOut() {
         isAuthorized = false
         SignIn.removeFromUserDefault()
+    }
+    
+    func signIn() {
+        let signIn = SignIn.getFromUserDefault()
+        isAuthorized = signIn != nil
+        if let signIn {
+            authorizationToken = signIn.tokenType + " " + signIn.accessToken
+            userId = signIn.userId
+        }
     }
 }

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SignInView: View {
     @StateObject private var signInVM = SignInViewModel()
-    @EnvironmentObject var authorizationService: AuthorizationService
     
     var body: some View {
         VStack {
@@ -21,7 +20,6 @@ struct SignInView: View {
             
             Button("Sign In") {
                 signInVM.fetchSignIn()
-                authorizationService.isAuthorized = signInVM.signedIn
             }
         }
         .padding()
@@ -31,6 +29,5 @@ struct SignInView: View {
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
-            .environmentObject(AuthorizationService.example)
     }
 }
