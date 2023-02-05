@@ -21,6 +21,7 @@ struct SignInView: View {
             Button("Sign In") {
                 signInVM.fetchSignIn()
             }
+            .disabled(signInVM.isSignningIn)
         }
         .padding()
     }
