@@ -50,3 +50,41 @@
 - password: "SET",
 - created_at:
 - password_updated_at:
+
+## Captcha
+
+> usage: get captcha_token to fullfill the x-captcha-token field of request headers
+
+**Request URL**: https://user.mypikpak.com/v1/shield/captcha/init
+
+**Request header**
+
+- x-client-id
+- x-device-id
+
+**Request body**
+
+- client_id:
+- action: "GET:/vip/v1/vip/info"
+- device_id: "879f8d1d6660c5290a89ad95652b69d6"
+
+**Response**
+
+- captcha_token:
+- expires_in: 300
+
+## VIP info
+
+**Request URL**: https://api-drive.mypikpak.com/vip/v1/vip/info
+
+**Request query**
+
+- userId: [userId](#userId)
+
+**Response**
+
+- data:
+  - expire: timestamp
+  - status: string
+  - type: string
+  - user_id: [userId](#userId)
