@@ -14,10 +14,12 @@ class SignInViewModel: ObservableObject {
     
     private var requests = Set<AnyCancellable>()
     
+    private let url = URL(string: "https://user.mypikpak.com/v1/auth/signin")!
+    
     func fetchSignIn() {
         isSignningIn = true
         let encoder = JSONEncoder()
-        var request = URLRequest(url: SignIn.url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? encoder.encode(self.request)
         URLSession.shared.dataTaskPublisher(for: request)

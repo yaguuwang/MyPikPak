@@ -38,8 +38,6 @@ struct SignIn: Codable, Equatable {
     
     static let `default` = SignIn(tokenType: "default", accessToken: "default", refreshToken: "default", expiresIn: 100, userId: "default")
     
-    static let url = URL(string: "https://user.mypikpak.com/v1/auth/signin")!
-    
     static let key = "SignIn"
     
     func saveToUserDefault() {
